@@ -7,14 +7,14 @@ const {
 } = require("../validation/zodValidation");
 
 //@desc     handle sign up user
-//@route    POST /api/v1/user/signUp
+//@route    POST /api/v1/user/signup
 //@access   public
 exports.singupUser = async (req, res, next) => {
   try {
     const response = singupParser.safeParse(req.body);
     console.log(response);
     if (!response.success) {
-      return res.status(411).json({
+      return res.status(409).json({
         success: false,
         message: "Please chek your emial or password",
         data: {},
@@ -23,7 +23,7 @@ exports.singupUser = async (req, res, next) => {
     const user = await User.findOne({ username: response.data.username });
     console.log(user);
     if (user) {
-      return res.status(411).json({
+      return res.status(409).json({
         success: false,
         message: "Email is taken",
         data: {},
@@ -69,7 +69,7 @@ exports.singinUser = async (req, res, next) => {
   try {
     const response = singinParser.safeParse(req.body);
     if (!response.success) {
-      return res.status(411).json({
+      return res.status(400).json({
         success: false,
         message: "Please chek your emial or password",
         date: {},

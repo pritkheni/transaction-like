@@ -1,10 +1,29 @@
-
+import { Route, Routes } from "react-router-dom"
+import SignUp from "./components/SignUp"
+import SingIn from "./components/SingIn"
+import Layout from "./components/Layout"
+import Missing from "./components/Missing"
+import Dashbord from "./components/Dashbord"
+import RequireAuth from "./components/RequireAuth"
 function App() {
 
   return (
-    <div>
-        Hello world
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout/>}>
+        {/* public routes every one should access */}
+        <Route path="/login" element={<SingIn/>}/>
+        <Route path="/singup" element={<SignUp/>}/>
+
+        <Route element={<RequireAuth/>}>
+          {/* private route that we want to protected */}
+          <Route path="/dashbord" element={<Dashbord/>}/>
+        </Route>
+
+
+
+        <Route path="*" element={<Missing/>}/>
+      </Route>
+    </Routes>
   )
 }
 
