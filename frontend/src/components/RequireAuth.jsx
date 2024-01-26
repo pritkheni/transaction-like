@@ -4,8 +4,14 @@ import useAuth from "../hooks/useAuth"
 export default function RequireAuth() {
     const {auth} = useAuth();
     const location = useLocation();
+    console.log('====================================');
+    console.log(auth);
+    console.log('====================================');
+    console.log('====================================');
+    console.log((auth?.authToken));
+    console.log('====================================');
   return (
-    auth?.user
+    (auth?.authToken)
     ?<Outlet/>
     :<Navigate to='/login' state={{from:location}} replace />
   )

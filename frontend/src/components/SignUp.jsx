@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "../api/axios";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const EMAIL_REGX = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 const PASS_REGX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/
@@ -8,6 +10,8 @@ export default function SignUp() {
     const lastNameRef = useRef()
     const emailRef = useRef();
     const passRef = useRef();
+    const {setAuth} = useAuth()
+    const navigate = useNavigate()
 
     const errorRef = useRef();
 
@@ -87,6 +91,8 @@ export default function SignUp() {
             setLastName('')
             setPass('')
             setUser('')
+            setAuth({firstName:firstName,lastName:lastName,username:email,authToken:res.data.data.token})
+            navigate('/dashbord',{replace:true})
         }catch(err){
             console.log(err);
             if(!err?.response){
@@ -195,10 +201,10 @@ export default function SignUp() {
                         &#x2022; Must include numbers and special charaters.
                     </p>
                 </div>
-                <button disabled = {(firstName === '') || (lastName === '') || !validName || !validPass } className="rounded-lg bg-black text-white text-lg p-2 shadow-lg my-3 disabled:bg-slate-300 cursor-pointer">Sign Up</button>
+                <button disabled = {(firstName === '') || (lastName === '') || !validName || !validPass } className="rounded-lg bg-black text-white text-lg p-2 shadow-sm my-3 disabled:bg-slate-300 cursor-pointer">Sign Up</button>
             </form>
             <div className="text-black text-base font-semibold flex my-2">
-                {`Already have an accound? `}<button className="bg-transparent underline ml-1">Login</button>
+                {`Already have an accound? `}<Link to='/login' className="bg-transparent underline ml-1">Login</Link>
             </div>
         </div>
     </section>

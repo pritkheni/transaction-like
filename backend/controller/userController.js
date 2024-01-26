@@ -48,7 +48,7 @@ exports.singupUser = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "User created successfully",
-      date: {
+      data: {
         token: jwtToken,
       },
     });
@@ -57,13 +57,13 @@ exports.singupUser = async (req, res, next) => {
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
-      date: {},
+      data: {},
     });
   }
 };
 
 //@desc     handle sign in user
-//@route    POST /api/v1/user/signIn
+//@route    POST /api/v1/user/signin
 //@access   public
 exports.singinUser = async (req, res, next) => {
   try {
@@ -72,7 +72,7 @@ exports.singinUser = async (req, res, next) => {
       return res.status(400).json({
         success: false,
         message: "Please chek your emial or password",
-        date: {},
+        data: {},
       });
     }
     const user = await User.findOne({
@@ -88,21 +88,23 @@ exports.singinUser = async (req, res, next) => {
       return res.status(200).json({
         success: true,
         message: "User signin successfully",
-        date: {
+        data: {
           token: jwtToken,
+          firstName: user.firstName,
+          lastName: user.lastName,
         },
       });
     }
     res.status(404).json({
       success: false,
       message: "User not found",
-      date: {},
+      data: {},
     });
   } catch (err) {
     return res.status(500).json({
       success: false,
       message: "Internal server error",
-      date: {},
+      data: {},
     });
   }
 };
@@ -123,7 +125,7 @@ exports.updateUser = async (req, res, next) => {
     const update = await User.findByIdAndUpdate(req.userId, req.body);
     req.status(200).json({
       success: false,
-      message: "User update successfully",
+      message: "User updata successfully",
       data: {},
     });
   } catch (err) {

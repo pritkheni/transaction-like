@@ -11,7 +11,7 @@ exports.authJwtToken = (req, res, next) => {
   // }
   const reqtoken = req.headers["authorization"];
   console.log(reqtoken);
-  if (reqtoken == null && !reqtoken.startsWith("Bearer ")) {
+  if (!reqtoken) {
     return res.status(403).json({
       success: false,
       message: "Please pass vlaid token",

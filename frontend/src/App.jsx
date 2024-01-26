@@ -5,6 +5,7 @@ import Layout from "./components/Layout"
 import Missing from "./components/Missing"
 import Dashbord from "./components/Dashbord"
 import RequireAuth from "./components/RequireAuth"
+import { Suspense } from "react"
 function App() {
 
   return (
@@ -16,7 +17,7 @@ function App() {
 
         <Route element={<RequireAuth/>}>
           {/* private route that we want to protected */}
-          <Route path="/dashbord" element={<Dashbord/>}/>
+          <Route path="/dashbord" element={<Suspense fallback="Loading"><Dashbord/></Suspense>}/>
         </Route>
 
 

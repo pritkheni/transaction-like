@@ -1,8 +1,13 @@
 import{useRef,useState,useEffect} from 'react'
 import axios from '../api/axios'
 import useAuth from '../hooks/useAuth'
+import {useNavigate,Link} from 'react-router-dom'
 export default function SingIn() {
     const {setAuth} = useAuth()
+    const navigate = useNavigate()
+    // const location = useLocation()
+    // const form = location?.state?.form?.pathname || "/dashbord"
+
     const userRef = useRef()
     const errorRef = useRef()
     const [user,setUser] = useState('')
@@ -17,7 +22,6 @@ export default function SingIn() {
     },[user,password])
     const handleSingIn = async (e) =>{
         e.preventDefault()
-        console.log();
         try{
             const response = await axios.post('api/v1/user/signin',JSON.stringify({
                 username:user,
@@ -30,11 +34,14 @@ export default function SingIn() {
             setErrMsg('')
             setUser('')
             setPassword('')
-            console.log(response.data.data.token);
-            setAuth({username:user,authToken:response.data.data.token})
-            console.log(JSON.stringify(response?.data)); 
+            console.log('====================================');
+            console.log(response.data);
+            console.log('====================================');
+            console.log(response.data.data['token']);
+            setAuth({firstName:response.data.data['firstName'],lastName:response.data.data['lastName'],username:user,authToken:response.data.data['token']})
+            navigate("/dashbord",{replace:true})
         }catch(err){
-            console.error(JSON.stringify(err));
+            console.error(err);
             if(!err?.response){
                 setErrMsg('No response from server')
             }else if(err.response?.status === 400){
@@ -83,10 +90,10 @@ export default function SingIn() {
                         required
                     />
                 </div>
-                <button disabled = {(user === '' || password === '')} className="rounded-lg bg-black text-white text-lg p-2 shadow-lg my-3 disabled:bg-slate-300">Sign In</button>
+                <button disabled = {(user === '' || password === '')} className="rounded-lg bg-black text-white text-lg p-2 shadow-sm my-3 disabled:bg-slate-300">Sign In</button>
             </form>
             <div className="text-black text-base font-semibold flex my-2">
-                {`Don't have an accound? `}<button className="bg-transparent underline ml-1">Sing Up</button>
+                {`Don't have an accound? `}<Link to='/singup' className="bg-transparent underline ml-1">Sing Up</Link>
             </div>
         </div>
         

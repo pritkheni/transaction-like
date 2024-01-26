@@ -9,6 +9,9 @@ export default {
         initial: "0 0 0 1px rgb(153, 153, 153)",
         focus: "0 0 0 1px rgb(0, 0, 0)",
       },
+      backdropBlur: {
+        xs: "1px",
+      },
     },
   },
   plugins: [],
